@@ -133,7 +133,8 @@ public class HbmWorldGen implements IWorldGenerator {
             DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, 1, 32, 30, 10, ModBlocks.gas_explosive);
         }
 
-        if (WorldConfig.alexandriteSpawn > 0 && rand.nextInt(WorldConfig.alexandriteSpawn) == 0) {
+        int dimAlexandriteSpawn = parseInt(CompatibilityConfig.alexandriteSpawn.get(dimID));
+        if (dimAlexandriteSpawn > 0 && rand.nextInt(dimAlexandriteSpawn) == 0) {
             DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, 1, 3, 10, 5, ModBlocks.ore_alexandrite);
         }
         if (dimID == 0) {
@@ -196,12 +197,12 @@ public class HbmWorldGen implements IWorldGenerator {
         DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(CompatibilityConfig.cinnabarSpawn.get(dimID)), 4, 8, 16, ModBlocks.ore_cinnabar);
         DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(CompatibilityConfig.cobaltSpawn.get(dimID)), 4, 4, 8, ModBlocks.ore_cobalt);
 
-        DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(WorldConfig.ironClusterSpawn), 6, 15, 45, ModBlocks.cluster_iron);
+        DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(CompatibilityConfig.ironClusterSpawn.get(dimID)), 6, 15, 45, ModBlocks.cluster_iron);
         DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(CompatibilityConfig.titaniumClusterSpawn.get(dimID)), 6, 15, 30, ModBlocks.cluster_titanium);
         DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(CompatibilityConfig.aluminiumClusterSpawn.get(dimID)), 6, 15, 35, ModBlocks.cluster_aluminium);
         DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(CompatibilityConfig.copperClusterSpawn.get(dimID)), 6, 15, 20, ModBlocks.cluster_copper);
 
-        DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, parseInt(WorldConfig.limestoneSpawn), 6, 15, 20, ModBlocks.stone_resource.getDefaultState().withProperty(BlockResourceStone.META, BlockEnums.EnumStoneType.LIMESTONE.ordinal()));
+        DungeonToolbox.generateOre(world, rand, chunkMinX, chunkMinZ, WorldConfig.limestoneSpawn, 6, 15, 20, ModBlocks.stone_resource.getDefaultState().withProperty(BlockResourceStone.META, BlockEnums.EnumStoneType.LIMESTONE.ordinal()));
 
         if (WorldConfig.newBedrockOres) {
             if (rand.nextInt(10) == 0) {
@@ -709,7 +710,8 @@ public class HbmWorldGen implements IWorldGenerator {
             }
         }
 
-        if (WorldConfig.oilSpawn > 0 && rand.nextInt(WorldConfig.oilSpawn) == 0) {
+        int dimOilSpawn = parseInt(CompatibilityConfig.oilBubbleSpawn.get(dimID));
+        if (dimOilSpawn > 0 && rand.nextInt(dimOilSpawn) == 0) {
             int randPosX = chunkMinX + rand.nextInt(16);
             int randPosY = rand.nextInt(25);
             int randPosZ = chunkMinZ + rand.nextInt(16);

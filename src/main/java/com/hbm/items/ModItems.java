@@ -136,7 +136,7 @@ public class ModItems {
         ItemSimpleConsumable.giveSoundAndDecrement(stack, user, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, new ItemStack(ModItems.iv_xp_empty));
         user.addExperience(100);
     }).setCreativeTab(MainRegistry.consumableTab);
-    public static final Item fmn = new ItemPill(0, "fmn").setCreativeTab(MainRegistry.consumableTab);
+    public static final Item fmn = new ItemPill(0, "fmn", "tablet").setCreativeTab(MainRegistry.consumableTab);
     public static final Item five_htp = new ItemPill(0, "five_htp").setCreativeTab(MainRegistry.consumableTab);
     public static final Item iv_empty = new ItemSimpleConsumable("iv_empty").setUseActionServer((stack, user) -> {
         if (user.hurtResistantTime <= 0) {

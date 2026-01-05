@@ -1,7 +1,5 @@
 package com.hbm.config;
 
-import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
