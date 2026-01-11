@@ -159,9 +159,9 @@ public class TileEntityBatteryREDD extends TileEntityBatteryBase {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-
-        this.power = new BigInteger(nbt.getByteArray("power"));
-
+        byte[] pwrArr = nbt.getByteArray("power");
+        if (pwrArr.length > 0)
+            this.power = new BigInteger(pwrArr);
     }
 
     @Override
