@@ -9,6 +9,7 @@ import com.hbm.explosion.ExplosionLarge;
 import com.hbm.interfaces.AutoRegister;
 import com.hbm.interfaces.IConstantRenderer;
 import com.hbm.main.MainRegistry;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @AutoRegister(name = "entity_mirvlet", trackingRange = 1000)
 public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConstantRenderer, IRadarDetectable {
 	private Ticket loaderTicket;
@@ -171,5 +173,10 @@ public class EntityMIRV extends EntityThrowable implements IChunkLoader, IConsta
 				ForgeChunkManager.forceChunk(loaderTicket, chunk);
 			}
 		}
+	}
+
+	// TODO: maybe extract to an interface?
+	public void setThrower(EntityLivingBase thrower) {
+		this.thrower = thrower;
 	}
 }
