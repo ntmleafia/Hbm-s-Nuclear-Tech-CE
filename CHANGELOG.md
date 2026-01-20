@@ -8,8 +8,9 @@
 ### Fixes
 - Fixed a 1.5.1.4 regression that led to incorrect rocket trajectories
 - Fixed a 1.4.2.0 regression that caused the recipe of gas turbine to be missing
+- Added some other missing crafting recipes
 ### Changes
-
+- Absorber blocks now use meta. Old blocks will be transformed automatically.
 ### New Features
 
 ### Performance
