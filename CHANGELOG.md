@@ -10,11 +10,14 @@
 - Fixed a 1.4.2.0 regression that caused the recipe of gas turbine to be missing
 - Added some other missing crafting recipes
 - Fixed radiation system not diffusing correctly across non-uniform sections
-- Fixed VAO not detected on macOS with cleanroom / lwjgl3ify
+- ~~Fixed VAO not detected on macOS with cleanroom / lwjgl3ify~~ still not working
+- Fixed Liquidator Medal incorrect slot & inapplicable to helmets
 ### Changes
 - Added new absorber blocks that use block metadata. Old absorber blocks will be transformed automatically.
+- Ported new model for deuterium tower from 1.7
 ### New Features
 - Ported rebar & rebar placer
+- Added an integrated-server-only visualizer for radiation system. Run `/radvis` for more information.
 ### Performance
 
 ### Misc
