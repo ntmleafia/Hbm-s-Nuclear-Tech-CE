@@ -9,6 +9,7 @@ import com.hbm.capability.HbmCapability.IHBMData;
 import com.hbm.capability.HbmLivingCapability;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.*;
+import com.hbm.core.LeafiaBlockReplacer;
 import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.entity.mob.EntityCreeperTainted;
 import com.hbm.entity.mob.EntityCyberCrab;
@@ -95,6 +96,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.BlockStatePaletteHashMap;
+import net.minecraft.world.chunk.BlockStatePaletteLinear;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IBlockStatePalette;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.conditions.RandomChanceWithLooting;
@@ -114,6 +120,7 @@ import net.minecraftforge.event.entity.player.PlayerFlyableFallEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -157,6 +164,38 @@ public class ModEventHandler {
     public static boolean doesArrayContain(Object[] array, Object objectCheck) {
         System.out.println("On Recipe Register");
         return false;
+    }
+
+    @SubscribeEvent
+    public void replaceBlocks(ChunkEvent.Load evt) {
+        Chunk chunk = evt.getChunk();
+        for (ExtendedBlockStorage storage : chunk.getBlockStorageArray())
+            replacePalette(storage);
+    }
+    public static void replacePalette(ExtendedBlockStorage storage) {
+        if (storage == null || storage.data == null || storage.data.palette == null) return;
+        IBlockStatePalette palette = storage.data.palette;
+        if (palette instanceof BlockStatePaletteHashMap map) {
+            for (IBlockState state : map.statePaletteMap) {
+                try {
+                    //System.out.println("STATE/HASH: "+state);
+                    if (state.getBlock().getClass().getSimpleName().equals("BlockDummyAir")) {
+                        int id = map.statePaletteMap.getId(state);
+                        map.statePaletteMap.put(LeafiaBlockReplacer.replaceBlock(state),id);
+                    }
+                } catch (NullPointerException ignored) {}
+            }
+        } else if (palette instanceof BlockStatePaletteLinear linear) {
+            for (int i = 0; i < linear.states.length; i++) {
+                try {
+                    //System.out.println("STATE/LINEAR: "+linear.states[i]);
+                    if (linear.states[i].getBlock().getClass().getSimpleName().equals("BlockDummyAir"))
+                        linear.states[i] = LeafiaBlockReplacer.replaceBlock(linear.states[i]);
+                } catch (NullPointerException ignored) {}
+            }
+        } else {
+            throw new RuntimeException("Impossible case ("+palette.getClass().getName()+")");
+        }
     }
 
     @SubscribeEvent
