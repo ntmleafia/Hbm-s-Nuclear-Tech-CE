@@ -1,10 +1,7 @@
-package com.hbm.core;
+package com.hbm.util;
 
 //import com.leafia.contents.AddonBlocks.LegacyBlocks;
-import com.hbm.blocks.ModBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockSand.EnumType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -15,7 +12,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 /// stolen from leafai' cusred addon addon by leafia herself
-public class LeafiaBlockReplacer {
+public class CompatBlockReplacer {
 	/**
 	 * The blocks to be replaced.
 	 * <p>Meta will be automatically copied. (you cannot set it manually)

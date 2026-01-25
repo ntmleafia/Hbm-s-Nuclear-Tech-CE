@@ -9,7 +9,7 @@ import com.hbm.capability.HbmCapability.IHBMData;
 import com.hbm.capability.HbmLivingCapability;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.config.*;
-import com.hbm.core.LeafiaBlockReplacer;
+import com.hbm.util.CompatBlockReplacer;
 import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.entity.mob.EntityCreeperTainted;
 import com.hbm.entity.mob.EntityCyberCrab;
@@ -181,7 +181,7 @@ public class ModEventHandler {
                     //System.out.println("STATE/HASH: "+state);
                     if (state.getBlock().getClass().getSimpleName().equals("BlockDummyAir")) {
                         int id = map.statePaletteMap.getId(state);
-                        map.statePaletteMap.put(LeafiaBlockReplacer.replaceBlock(state),id);
+                        map.statePaletteMap.put(CompatBlockReplacer.replaceBlock(state),id);
                     }
                 } catch (NullPointerException ignored) {}
             }
@@ -190,7 +190,7 @@ public class ModEventHandler {
                 try {
                     //System.out.println("STATE/LINEAR: "+linear.states[i]);
                     if (linear.states[i].getBlock().getClass().getSimpleName().equals("BlockDummyAir"))
-                        linear.states[i] = LeafiaBlockReplacer.replaceBlock(linear.states[i]);
+                        linear.states[i] = CompatBlockReplacer.replaceBlock(linear.states[i]);
                 } catch (NullPointerException ignored) {}
             }
         } else {
