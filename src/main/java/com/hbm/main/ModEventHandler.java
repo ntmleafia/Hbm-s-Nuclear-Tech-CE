@@ -178,35 +178,48 @@ public class ModEventHandler {
     }
 
     private static void replacePalette(ExtendedBlockStorage storage) {
-        if (storage == null || storage.data == null || storage.data.palette == null) return;
-        IBlockStatePalette palette = storage.data.palette;
+        if (storage == null) return;
+        BlockStateContainer data = storage.data;
+        if (data == null) return;
+        IBlockStatePalette palette = data.palette;
+        if (palette == null) return;
         if (palette instanceof BlockStatePaletteHashMap map) {
             IntIdentityHashBiMap<IBlockState> statePaletteMap = map.statePaletteMap;
             if (statePaletteMap == null) return;
-            for (IBlockState state : statePaletteMap) {
+            int size = statePaletteMap.size();
+            for (int id = 0; id < size; id++) {
+                IBlockState state = statePaletteMap.get(id);
+                if (state == null) continue;
                 // inheritance: BlockDummyAir extends BlockMetaAir extends BlockAir
                 if (state.getBlock() instanceof BlockMetaAir) {
-                    int id = statePaletteMap.getId(state);
-                    statePaletteMap.put(CompatBlockReplacer.replaceBlock(state), id);
+                    IBlockState repl = CompatBlockReplacer.replaceBlock(state);
+                    statePaletteMap.put(repl, id);
                 }
             }
         } else if (palette instanceof BlockStatePaletteLinear linear) {
             IBlockState[] states = linear.states;
             if (states == null) return;
             for (int i = 0; i < states.length; i++) {
-                if (states[i].getBlock() instanceof BlockMetaAir) {
-                    states[i] = CompatBlockReplacer.replaceBlock(states[i]);
+                IBlockState state = states[i];
+                if (state == null) continue;
+                if (state.getBlock() instanceof BlockMetaAir) {
+                    IBlockState repl = CompatBlockReplacer.replaceBlock(state);
+                    states[i] = repl;
                 }
             }
         } else if (palette == BlockStateContainer.REGISTRY_BASED_PALETTE) {
-            BitArray bits = storage.data.storage;
+            BitArray bits = data.storage;
             if (bits == null) return;
             for (int i = 0; i < 4096; i++) {
                 int rawId = bits.getAt(i);
+                if (rawId == 0) continue; // AIR
                 IBlockState state = Block.BLOCK_STATE_IDS.getByValue(rawId);
-                if (state != null && state.getBlock() instanceof BlockMetaAir) {
-                    int newId = Block.BLOCK_STATE_IDS.get(CompatBlockReplacer.replaceBlock(state));
-                    bits.setAt(i, Math.max(newId, 0));
+                if (state == null) continue;
+                if (state.getBlock() instanceof BlockMetaAir) {
+                    IBlockState repl = CompatBlockReplacer.replaceBlock(state);
+                    int newId = Block.BLOCK_STATE_IDS.get(repl);
+                    if (newId < 0) newId = 0;
+                    bits.setAt(i, newId);
                 }
             }
         } else {
