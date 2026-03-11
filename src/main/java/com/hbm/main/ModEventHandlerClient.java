@@ -1286,11 +1286,13 @@ public class ModEventHandlerClient {
     @SubscribeEvent
     public void clickHandler(MouseEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        /// OVERLAP HANDLING ///
-        HbmKeybinds.handleOverlap(event.isButtonstate(), event.getButton() - 100);
+        if (event.getButton() >= 0) {
+            /// OVERLAP HANDLING ///
+            HbmKeybinds.handleOverlap(event.isButtonstate(), event.getButton() - 100);
 
-        /// KEYBIND PROPS ///
-        HbmKeybinds.handleProps(event.isButtonstate(), event.getButton() - 100);
+            /// KEYBIND PROPS ///
+            HbmKeybinds.handleProps(event.isButtonstate(), event.getButton() - 100);
+        }
         if (event.getButton() == 1 && !event.isButtonstate())
             ItemSwordCutter.canClick = true;
 

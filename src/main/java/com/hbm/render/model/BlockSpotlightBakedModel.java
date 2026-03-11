@@ -168,10 +168,10 @@ public class BlockSpotlightBakedModel extends AbstractWavefrontBakedModel {
         return switch (facing) {
             case NORTH -> flipNS ? (float) Math.PI : 0;
             case SOUTH -> !flipNS ? (float) Math.PI : 0;
-            case EAST -> (float) Math.PI * (-flipX + addX);
-            case WEST -> (float) Math.PI * (flipX + addX);
-            case UP -> (float) Math.PI * 0.5F;
-            case DOWN -> (float) Math.PI * -0.5F;
+            case EAST -> (float) Math.PI * (flipX + addX);
+            case WEST -> (float) Math.PI * (-flipX + addX);
+            case UP -> (float) Math.PI * -0.5F;
+            case DOWN -> (float) Math.PI * 0.5F;
         };
     }
 }
