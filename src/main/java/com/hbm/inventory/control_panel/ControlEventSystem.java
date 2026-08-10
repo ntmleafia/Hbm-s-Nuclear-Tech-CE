@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
@@ -14,7 +15,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = Tags.MODID)
 public class ControlEventSystem {
@@ -155,6 +158,8 @@ public class ControlEventSystem {
 		}
 		return system;
 	}
+
+	public static Set<TileEntity> wasValid = new HashSet<>();
 	
 	@SubscribeEvent
 	public static void tick(WorldTickEvent evt){
@@ -162,7 +167,18 @@ public class ControlEventSystem {
 			return;
 		ControlEventSystem s = systems.get(evt.world);
 		if(s != null){
-			for(IControllable c : s.tickables){
+			Set<IControllable> controllables = new HashSet<>(s.tickables);
+			for(IControllable c : controllables){
+				if (c instanceof TileEntity te) {
+					if (te.isInvalid()) {
+						if (wasValid.contains(te)) {
+							s.tickables.remove(te);
+							wasValid.remove(te);
+						}
+						continue;
+					} else
+						wasValid.add(te);
+				}
 				c.receiveEvent(c.getControlPos(), ControlEvent.newEvent("tick").setVar("time", evt.world.getTotalWorldTime()));
 			}
 		}
