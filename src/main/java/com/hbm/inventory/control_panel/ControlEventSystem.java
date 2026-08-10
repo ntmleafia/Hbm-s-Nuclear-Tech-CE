@@ -158,8 +158,6 @@ public class ControlEventSystem {
 		}
 		return system;
 	}
-
-	public static Set<TileEntity> wasValid = new HashSet<>();
 	
 	@SubscribeEvent
 	public static void tick(WorldTickEvent evt){
@@ -171,13 +169,9 @@ public class ControlEventSystem {
 			for(IControllable c : controllables){
 				if (c instanceof TileEntity te) {
 					if (te.isInvalid()) {
-						if (wasValid.contains(te)) {
-							s.tickables.remove(te);
-							wasValid.remove(te);
-						}
+						s.tickables.remove(te);
 						continue;
-					} else
-						wasValid.add(te);
+					}
 				}
 				c.receiveEvent(c.getControlPos(), ControlEvent.newEvent("tick").setVar("time", evt.world.getTotalWorldTime()));
 			}
