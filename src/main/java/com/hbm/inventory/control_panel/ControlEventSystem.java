@@ -158,6 +158,8 @@ public class ControlEventSystem {
 		}
 		return system;
 	}
+
+	public static Set<TileEntity> wasValid = new HashSet<>();
 	
 	@SubscribeEvent
 	public static void tick(WorldTickEvent evt){
@@ -168,10 +170,14 @@ public class ControlEventSystem {
 			Set<IControllable> controllables = new HashSet<>(s.tickables);
 			for(IControllable c : controllables){
 				if (c instanceof TileEntity te) {
-					if (te.isInvalid()) {
-						s.tickables.remove(te);
-						continue;
-					}
+					if (!te.getWorld().getChunk(te.getPos()).isLoaded()) {
+						if (wasValid.contains(te)) {
+							s.tickables.remove(te);
+							wasValid.remove(te);
+							continue;
+						}
+					} else
+						wasValid.add(te);
 				}
 				c.receiveEvent(c.getControlPos(), ControlEvent.newEvent("tick").setVar("time", evt.world.getTotalWorldTime()));
 			}
