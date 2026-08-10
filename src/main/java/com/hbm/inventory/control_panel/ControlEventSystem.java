@@ -170,7 +170,7 @@ public class ControlEventSystem {
 			Set<IControllable> controllables = new HashSet<>(s.tickables);
 			for(IControllable c : controllables){
 				if (c instanceof TileEntity te) {
-					if (!te.getWorld().getChunk(te.getPos()).isLoaded()) {
+					if (te.getWorld().getChunkProvider().getLoadedChunk(te.getPos().getX()>>4,te.getPos().getZ()>>4) == null) {
 						if (wasValid.contains(te)) {
 							s.tickables.remove(te);
 							wasValid.remove(te);
